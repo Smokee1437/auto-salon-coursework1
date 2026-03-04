@@ -70,6 +70,77 @@ html
                 <label for="car_model" class="form-label">Модель автомобиля</label>
                 <input type="text" class="form-control" id="car_model" name="car_model" placeholder="Все модели" value="{{ car_model }}">
             </div>
+            <div class={% extends "base.html" %}
+
+{% block title %}Отчет по продажам{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1>Отчет по продажам</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <button onclick="window.print()" class="btn btn-secondary">
+            <i class="bi bi-printer"></i> Печать отчета
+        </button>
+    </div>
+</div>
+
+<!-- Статистика -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Общая выручка</h5>
+                <p class="card-text display-6">{{ total_revenue }} ₽</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title">Всего продаж</h5>
+                <p class="card-text display-6">{{ total_sales }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">Средняя цена</h5>
+                <p class="card-text display-6">{{ avg_price }} ₽</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Макс. цена</h5>
+                <p class="card-text display-6">{{ max_price }} ₽</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Фильтры -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" class="row g-3">
+            <div class="col-md-3">
+                <label for="date_from" class="form-label">Дата с</label>
+                <input type="date" class="form-control" id="date_from" name="date_from" value="{{ date_from }}">
+            </div>
+            <div class="col-md-3">
+                <label for="date_to" class="form-label">Дата по</label>
+                <input type="date" class="form-control" id="date_to" name="date_to" value="{{ date_to }}">
+            </div>
+            <div class="col-md-4">
+                <label for="car_model" class="form-label">Модель автомобиля</label>
+                <input type="text" class="form-control" id="car_model" name="car_model" placeholder="Все модели" value="{{ car_model }}">
+            </div>
             <div class="col-md-2 d-flex align-items-end">
                 <button type="submit" class="btn btn-primary w-100">Применить</button>
             </div>
