@@ -1,0 +1,102 @@
+html
+{% extends "base.html" %}
+
+{% block title %}Добавление автомобиля{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Добавление нового автомобиля</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="brand" class="form-label">Марка автомобиля *</label>
+                            <input type="text" class="form-control" id="brand" name="brand" required>
+                            <div class="form-text">Например: Toyota, BMW, Mercedes</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="model" class="form-label">Модель *</label>
+                            <input type="text" class="form-control" id="model" name="model" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="year" class="form-label">Год выпуска *</label>
+                            <input type="number" class="form-control" id="year" name="year" 
+                                   min="1900" max="2026" value="2026" required>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="price" class="form-label">Цена (₽) *</label>
+                            <input type="number" class="form-control" id="price" name="price" 
+                                   min="0" step="1000" required>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="mileage" class="form-label">Пробег (км)</label>
+                            <input type="number" class="form-control" id="mileage" name="mileage" 
+                                   min="0" value="0">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="color" class="form-label">Цвет</label>
+                            <input type="text" class="form-control" id="color" name="color" 
+                                   placeholder="Например: Черный, Белый, Синий">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="engine" class="form-label">Двигатель</label>
+                            <input type="text" class="form-control" id="engine" name="engine" 
+                                   placeholder="Например: 2.0 бензин, 3.0 дизель">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="transmission" class="form-label">Коробка передач</label>
+                        <select class="form-select" id="transmission" name="transmission">
+                            <option value="">Выберите...</option>
+                            <option value="Механическая">Механическая</option>
+                            <option value="Автоматическая">Автоматическая</option>
+                            <option value="Роботизированная">Роботизированная</option>
+                            <option value="Вариатор">Вариатор</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Описание</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Фотография автомобиля</label>
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                        <div class="form-text">Поддерживаются форматы: JPG, PNG, GIF (макс. 5 МБ)</div>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="available" name="available" checked>
+                        <label class="form-check-label" for="available">Автомобиль доступен для продажи</label>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary me-md-2">Отмена</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save"></i> Добавить автомобиль
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
