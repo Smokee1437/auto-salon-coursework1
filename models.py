@@ -22,6 +22,14 @@ class Car(db.Model):
     price = db.Column(db.Float, nullable=False)
     status = db.Column(db.String(20), default='available')  # available, sold
     
+    # Новые поля, соответствующие форме добавления
+    mileage = db.Column(db.Integer, nullable=True)           # пробег (км)
+    color = db.Column(db.String(30), nullable=True)          # цвет
+    engine = db.Column(db.String(50), nullable=True)         # тип двигателя
+    transmission = db.Column(db.String(30), nullable=True)   # коробка передач
+    description = db.Column(db.Text, nullable=True)          # описание
+    image = db.Column(db.String(200), nullable=True)         # путь к файлу изображения
+    
     # Связь с таблицей продаж
     sales = db.relationship('Sale', backref='car', lazy=True)
 
@@ -52,7 +60,8 @@ class Sale(db.Model):
     client_id = db.Column(db.Integer, db.ForeignKey('clients.id'), nullable=False)
     sale_date = db.Column(db.DateTime, default=datetime.utcnow)
     final_price = db.Column(db.Float, nullable=False)
+    # Добавлен способ оплаты (используется в форме продажи)
+    payment_method = db.Column(db.String(30), nullable=True)
 
     def __repr__(self):
         return f'<Sale {self.id} - {self.sale_date}>'
-
