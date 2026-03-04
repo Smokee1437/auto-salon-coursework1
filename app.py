@@ -1,3 +1,6 @@
+python
+import logging
+logging.basicConfig(level=logging.DEBUG)
 # -*- coding: utf-8 -*-
 """
 Основной файл приложения «Автосалон».
@@ -238,3 +241,4 @@ if __name__ == '__main__':
     # Запуск сервера разработки
     # debug=True позволяет видеть ошибки в браузере и авто-перезагружать сервер
     app.run(debug=True, host='127.0.0.1', port=5000)
+
