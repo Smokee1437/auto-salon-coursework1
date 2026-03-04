@@ -1,11 +1,3 @@
-python
-# -*- coding: utf-8 -*-
-"""
-Основной файл приложения «Автосалон».
-Реализует логику маршрутизации, обработку запросов и взаимодействие с базой данных.
-Стек: Python, Flask, SQLAlchemy.
-"""
-
 from flask import Flask, render_template, request, redirect, url_for, flash
 from models import db, Car, Client, Sale  # Импорт моделей и экземпляра БД
 from datetime import datetime
@@ -207,7 +199,7 @@ def sell_car():
     return render_template('sell_car.html', available_cars=available_cars)
 
 @app.route('/sales')
-def sales_history():
+def sales():  # Было sales_history
     """
     Страница истории продаж.
     """
@@ -357,7 +349,6 @@ if __name__ == '__main__':
     # Запуск сервера разработки
     # debug=True позволяет видеть ошибки в браузере и авто-перезагружать сервер
     app.run(debug=True, host='127.0.0.1', port=5000)
-    # debug=True позволяет видеть ошибки в браузере и авто-перезагружать сервер
-    app.run(debug=True, host='127.0.0.1', port=5000)
+
 
 
