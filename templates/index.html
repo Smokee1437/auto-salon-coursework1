@@ -1,4 +1,3 @@
-html
 {% extends "base.html" %}
 
 {% block title %}Главная - Автосалон{% endblock %}
@@ -45,7 +44,7 @@ html
                 <h5 class="card-title">
                     <i class="bi bi-graph-up"></i> Выручка
                 </h5>
-                <p class="card-text display-6">{{ total_revenue or 0 }} ₽</p>
+                <p class="card-text display-6">{{ total_revenue|int }} ₽</p>
                 <p class="text-muted">общая выручка</p>
             </div>
         </div>
@@ -64,7 +63,7 @@ html
                     {% for car in recent_cars %}
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         {{ car.brand }} {{ car.model }} ({{ car.year }})
-                        <span class="badge bg-primary rounded-pill">{{ car.price }} ₽</span>
+                        <span class="badge bg-primary rounded-pill">{{ car.price|int }} ₽</span>
                     </li>
                     {% endfor %}
                 </ul>
@@ -85,8 +84,13 @@ html
                 <ul class="list-group">
                     {% for sale in recent_sales %}
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{ sale.car_brand }} {{ sale.car_model }}
-                        <span class="badge bg-success rounded-pill">{{ sale.price }} ₽</span>
+                        {# Обращаемся к связанному автомобилю через sale.car #}
+                        {% if sale.car %}
+                            {{ sale.car.brand }} {{ sale.car.model }}
+                        {% else %}
+                            <em>Автомобиль удалён</em>
+                        {% endif %}
+                        <span class="badge bg-success rounded-pill">{{ sale.final_price|int }} ₽</span>
                     </li>
                     {% endfor %}
                 </ul>
