@@ -1,0 +1,154 @@
+html
+{% extends "base.html" %}
+
+{% block title %}Продажа автомобиля{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">Оформление продажи автомобиля</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" id="sellForm">
+                    <div class="mb-3">
+                        <label for="car_id" class="form-label">Выберите автомобиль *</label>
+                        <select class="form-select" id="car_id" name="car_id" required>
+                            <option value="">-- Выберите автомобиль --</option>
+                            {% for car in available_cars %}
+                            <option value="{{ car.id }}" 
+                                    data-price="{{ car.price }}"
+                                    data-brand="{{ car.brand }}"
+                                    data-model="{{ car.model }}"
+                                    data-year="{{ car.year }}">
+                                {{ car.brand }} {{ car.model }} ({{ car.year }}) - {{ car.price }} ₽
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div id="carDetails" class="card mb-3 bg-light" style="display: none;">
+                        <div class="card-body">
+                            <h5>Информация об автомобиле:</h5>
+                            <p id="carInfo"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="buyer_name" class="form-label">ФИО покупателя *</label>
+                            <input type="text" class="form-control" id="buyer_name" name="buyer_name" required>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="buyer_phone" class="form-label">Телефон покупателя *</label>
+                            <input type="tel" class="form-control" id="buyer_phone" name="buyer_phone" 
+                                   placeholder="+7 (___) ___-__-__" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="sale_price" class="form-label">Цена продажи (₽) *</label>
+                            <input type="number" class="form-control" id="sale_price" name="sale_price" 
+                                   min="0" step="1000" required>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="payment_method" class="form-label">Способ оплаты *</label>
+                            <select class="form-select" id="payment_method" name="payment_method" required>
+                                <option value="">Выберите...</option>
+                                <option value="cash">Наличные</option>
+                                <option value="card">Банковская карта</option>
+                                <option value="credit">Кредит</option>
+                                <option value="exchange">Трейд-ин</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="buyer_email" class="form-label">Email покупателя</label>
+                            <input type="email" class="form-control" id="buyer_email" name="buyer_email">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="buyer_passport" class="form-label">Паспортные данные</label>
+                            <input type="text" class="form-control" id="buyer_passport" name="buyer_passport" 
+                                   placeholder="Серия и номер">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Примечания</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="terms" required>
+                        <label class="form-check-label" for="terms">
+                            Я подтверждаю, что все данные указаны верно и покупатель ознакомлен с условиями покупки
+                        </label>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary me-md-2">Отмена</a>
+                        <button type="submit" class="btn btn-success" id="submitBtn">
+                            <i class="bi bi-check-circle"></i> Оформить продажу
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript для динамического отображения -->
+<script>
+document.getElementById('car_id').addEventListener('change', function() {
+    const selected = this.options[this.selectedIndex];
+    const carDetails = document.getElementById('carDetails');
+    const carInfo = document.getElementById('carInfo');
+    const priceInput = document.getElementById('sale_price');
+    
+    if (this.value) {
+        const brand = selected.dataset.brand;
+        const model = selected.dataset.model;
+        const year = selected.dataset.year;
+        const price = selected.dataset.price;
+        
+        carInfo.innerHTML = `
+            <strong>${brand} ${model}</strong><br>
+            Год выпуска: ${year}<br>
+            Рекомендованная цена: ${price} ₽
+        `;
+        carDetails.style.display = 'block';
+        
+        // Предлагаем рекомендованную цену
+        priceInput.value = price;
+        priceInput.min = Math.floor(price * 0.7); // Минимум 70% от цены
+    } else {
+        carDetails.style.display = 'none';
+        priceInput.value = '';
+    }
+});
+
+// Валидация формы
+document.getElementById('sellForm').addEventListener('submit', function(e) {
+    const price = document.getElementById('sale_price').value;
+    if (price < 0) {
+        e.preventDefault();
+        alert('Цена не может быть отрицательной');
+    }
+});
+
+// Форматирование телефона
+document.getElementById('buyer_phone').addEventListener('input', function(e) {
+    let x = e.target.value.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
+    e.target.value = !x[2] ? x[1] : '+7 (' + x[2] + ') ' + x[3] + (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
+});
+</script>
+{% endblock %}
